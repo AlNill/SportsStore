@@ -35,33 +35,33 @@ public class SeedProductData
                 {
                     ProductID = 4,
                     Name = "Corner Flags",
-                    Description = "A boat for one person",
-                    Category = "Watersports",
-                    Price = 275
+                    Description = "Give your playing field a prodfessional touch",
+                    Category = "Soccer",
+                    Price = 34.95m
                 },
                 new Product
                 {
                     ProductID = 5,
                     Name = "Stadium",
-                    Description = "A boat for one person",
-                    Category = "Watersports",
-                    Price = 275
+                    Description = "Flat-packed 35,000-seat stadium",
+                    Category = "Soccer",
+                    Price = 79500
                 },
                 new Product
                 {
                     ProductID = 6,
                     Name = "Thinking Cap",
-                    Description = "A boat for one person",
-                    Category = "Watersports",
-                    Price = 275
+                    Description = "Improve brain efficiency by 75%",
+                    Category = "Chess",
+                    Price = 16
                 },
                 new Product
                 {
                     ProductID = 7,
                     Name = "Unsteady Chair",
-                    Description = "A boat for one person",
-                    Category = "Watersports",
-                    Price = 275
+                    Description = "Secretly give your opponent a disadvantage",
+                    Category = "Chess",
+                    Price = 29.95m
                 },
                 new Product
                 {
