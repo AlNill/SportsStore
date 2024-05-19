@@ -2,18 +2,27 @@
 using SportsStore.Web.Infrastructure;
 using SportsStore.Web.Models;
 using SportsStore.Web.Models.ViewModels;
-using System.Reflection.Metadata.Ecma335;
-using System.Security.Cryptography.X509Certificates;
 
 namespace SportsStore.Web.Controllers;
 
 public class CartController : Controller
 {
     private IProductRepository _repository;
+    private Cart _cart;
 
-    public CartController(IProductRepository repository)
+    public CartController(IProductRepository repository, Cart cartService)
     {
         _repository = repository;
+        _cart = cartService;
+    }
+    
+    public ViewResult Index(string returnUrl)
+    {
+        return View(new CartIndexViewModel
+        {
+            Cart = _cart,
+            ReturnUrl = returnUrl
+        });
     }
 
     public RedirectToActionResult AddToCart(int productId, string returnUrl)
@@ -21,9 +30,7 @@ public class CartController : Controller
         Product product = _repository.Products.FirstOrDefault(p => p.ProductID == productId);
         if (product != null)
         {
-            Cart cart = GetCart();
-            cart.AddItem(product, 1);
-            SaveCart(cart);
+            _cart.AddItem(product, 1);
         }
         return RedirectToAction("Index", new {returnUrl});
     }
@@ -33,30 +40,8 @@ public class CartController : Controller
         Product product = _repository.Products.FirstOrDefault(p => p.ProductID == productId);
         if (product != null)
         {
-            Cart cart = GetCart();
-            cart.RemoveLine(product);
-            SaveCart(cart);
+            _cart.RemoveLine(product);
         }
         return RedirectToAction("Index", new { returnUrl });
-    }
-
-    private Cart GetCart()
-    {
-        var cart = HttpContext.Session.GetJson<Cart>("Cart") ?? new Cart();
-        return cart;
-    }
-
-    private void SaveCart(Cart cart)
-    {
-        HttpContext.Session.SetJson("Cart", cart);
-    }
-
-    public IActionResult Index(string returnUrl)
-    {
-        return View(new CartIndexViewModel
-        {
-            Cart = GetCart(),
-            ReturnUrl = returnUrl
-        });
     }
 }
