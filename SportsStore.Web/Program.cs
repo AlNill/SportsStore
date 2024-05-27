@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SportsStore.Web.Models;
 
@@ -7,6 +7,14 @@ var services = builder.Services;
 
 var connectionString = builder.Configuration["Data:SportsStoreProducts:ConnectionString"];
 services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connectionString));
+
+var identityConnectionString = builder.Configuration["Data:SportsStoreIdentity:ConnectionString"];
+services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlServer(identityConnectionString));
+services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<AppIdentityDbContext>()
+    .AddDefaultTokenProviders();
+
+
 services.AddTransient<IProductRepository, EFProductRepository>();
 services.AddScoped<Cart>(sp => SessionCart.GetCart(sp));
 services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -22,6 +30,7 @@ app.UseDeveloperExceptionPage();
 app.UseStatusCodePages();
 app.UseStaticFiles();
 app.UseSession();
+app.UseAuthentication();
 app.UseMvc(routes =>
 {
     routes.MapRoute(
